@@ -7,7 +7,7 @@ public class App {
 
             Calculator calculator=new Calculator(200,0);
 
-      
+
 
         try
         {
