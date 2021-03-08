@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Tester1 {
 
+    private static Scanner scanner=new Scanner(System.in);
     public static void main(String args[])
     {
 
@@ -35,6 +36,14 @@ public class Tester1 {
         }
         System.out.println(list1);
 
+        System.out.print("Enter first name: ");
+        String fName=scanner.next();
+        System.out.print("Enter last name: ");
+        String lName=scanner.next();
+        System.out.print("Enter emil name: ");
+        String email=scanner.next();
+        list1.add(new Employee(UUID.randomUUID().toString(),fName,lName,email));
+        System.out.println(list1);
 
     }
 }
