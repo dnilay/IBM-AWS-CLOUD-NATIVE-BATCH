@@ -16,6 +16,7 @@ public class Tester2 {
             System.out.println("1. Insert Record.");
             System.out.println("2. Display Record");
             System.out.println("3. Remove a Record");
+            System.out.println("4. Update a Record");
             System.out.println("0. Exit.");
             System.out.print("Enter your choice: ");
             choice=scanner.nextInt();
@@ -60,6 +61,20 @@ public class Tester2 {
                         }
 
                     }
+                    break;
+                case 4:
+                    System.out.print("enter key to update: ");
+                    key=scanner.nextInt();
+                    Employee employee=test.map.get(key);
+                    System.out.println("First Name-> ");
+                    fName=scanner.next();
+                    System.out.println("Last Name-> ");
+                    lName=scanner.next();
+                    System.out.println("Email-> ");
+                    email=scanner.next();
+                    employee.setLastName(lName);
+                    employee.setFirstName(fName);
+                    employee.setEmail(email);
                     break;
 
                 case 0:
