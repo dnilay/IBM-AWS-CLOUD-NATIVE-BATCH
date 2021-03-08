@@ -18,11 +18,22 @@ public class Tester1 {
         List<Employee> list1=new ArrayList<Employee>();
         list1.add(new Employee("1","a","b","c"));
         list1.add(new Employee("2","e","f","g"));
+        String id=new String("1");
         Iterator<Employee> iterator=list1.iterator();
+        System.out.println(list1.size());
         while (iterator.hasNext())
         {
-            System.out.println(iterator.next());
+
+            Employee e=iterator.next();
+            if (e.getEmployeeID().equals(id))
+            {
+                System.out.println(true);
+                //Employee e=iterator.next();
+                list1.remove(e);
+                System.out.println(list1.size());
+            }
         }
+        System.out.println(list1);
 
 
     }
