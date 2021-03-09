@@ -2,6 +2,7 @@ package comm.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class Tester5 {
     public static void printNames(List<? extends Account> lea) {
@@ -22,6 +23,9 @@ public class Tester5 {
        List<SavingsAccount> leo1=ls;
        System.out.println(leo1);
         leo.add(new CurrentAccount(1,"Fred",30000));//Compile error!
+        System.out.println(args[0]+ args[1]);
+        Properties properties=System.getProperties();
+        System.out.println(properties);
     }
 }
 
