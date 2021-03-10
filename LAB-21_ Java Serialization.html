@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0069)https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>LAB-21: Java Serialization</title>
+<link rel="stylesheet" type="text/css" href="./LAB-21_ Java Serialization_files/netbeans.css">
+
+<meta content="text/css" http-equiv="Content-Style-Type">
+<meta name="keywords" content="NetBeans, IDE, Java">
+<meta name="author" content="Pedro Corcuera">
+<style type="text/css">
+#search {
+	HEIGHT: 100%
+}
+#topmodule {
+	align: right
+}
+</style>
+
+</head>
+
+<body>
+<br>
+<h1 style="TEXT-ALIGN: center">Java Serialization<br></h1>
+
+<p style="MARGIN-LEFT: 40px">Object serialization is the process of saving an 
+object's state to a sequence of bytes, as well as the process of rebuilding 
+those bytes into a live object at some future time. The Java Serialization API 
+provides a standard mechanism for developers to handle object serialization. The 
+API is small and easy to use, provided the classes and methods are 
+understood.&nbsp; This hands-on lab takes you through the basics of using Java 
+serialization.<br></p>
+<p></p>
+<div class="indent"><br>
+<h3 class="tutorial">Resources<br></h3>
+<ul>
+  <li><a href="http://java.sun.com/developer/technicalArticles/Programming/serialization/">Discover 
+  the secrets of the Java Serialization API</a> article from java.sun.com 
+  </li><li><a href="http://java.sun.com/j2se/1.5.0/docs/guide/serialization/">Object 
+  Serialization tutorial</a> from java.sun.com 
+  </li><li><a href="http://www.mactech.com/articles/mactech/Vol.14/14.04/JavaSerialization/index.html">Java 
+  Serialization tutorial</a> from mactech.com <br>
+</li></ul>
+<h3 class="tutorial"><a name="Tutorial_Exercises"></a>Exercises</h3>
+<ul>
+  <li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_1">Exercise 
+  1: Serialize and deserialize an object</a><br>
+  </li><li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_2">Exercise 
+  2: Customizing default protocol </a><br>
+  </li><li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_3">Exercise 
+  3: Buffered stream </a> 
+  </li><li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Homework">Homework 
+  </a> </li>
+</ul>
+</div>
+<!-- ===================================================================================== -->
+<h2><a name="Exercise_1"></a>Exercise 1: Serialize and Deserialize an 
+object<br></h2>
+<div style="MARGIN-LEFT: 40px"><br>In this exercise, you will learn how to do 
+serialization and deserialization of the an object.&nbsp; You will also learn 
+how to use transient keyword.<br>
+<ol>
+  <li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#1.1">Serialize 
+  the current time</a> 
+  </li><li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#1.2">Use 
+  transient keyword</a><br></li></ol>
+</div><br>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial"><a name="1.1"></a>(1.1) Serialize the 
+current time<br></h3>
+<div style="MARGIN-LEFT: 40px"><br>0. Start NetBeans IDE if you have not done so 
+yet.<br>1. Create a new NetBeans project<br>
+<ul>
+  <li>Select <span style="FONT-WEIGHT: bold">File</span>-&gt;<span style="FONT-WEIGHT: bold">New Project (Ctrl+Shift+N)</span>. The <span style="FONT-WEIGHT: bold">New Project</span> dialog box appears. 
+  </li><li>Under <span style="FONT-WEIGHT: bold">Choose Project</span> pane, select 
+  <span style="FONT-WEIGHT: bold">Java </span>under <span style="FONT-WEIGHT: bold">Categories </span>and <span style="FONT-WEIGHT: bold">Java Application</span> under <span style="FONT-WEIGHT: bold">Projects</span>. <br>
+  </li><li>Click <span style="FONT-WEIGHT: bold">Next</span>. </li></ul>
+<ul>
+  <li>Under <span style="FONT-WEIGHT: bold">Name and Location</span> pane, for 
+  the <span style="FONT-WEIGHT: bold">Project Name</span> field, type in <span style="FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255)">SerializeAndDeserializeCurrrentTime</span> 
+  </span>as project name. 
+  </li><li>For <span style="FONT-WEIGHT: bold">Create Main Class</span> field, type 
+  in <span style="FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255)">SerializeTime</span></span>.&nbsp; <br>
+  </li><li>Click <span style="FONT-WEIGHT: bold">Finish</span>. </li></ul><img style="WIDTH: 737px; HEIGHT: 507px" alt="" src="./LAB-21_ Java Serialization_files/1_byte2.png"><br>
+<ul>
+  <li>Observe that <span style="FONT-WEIGHT: bold">SerializeAndDeserializeCurrrentTime </span>project 
+  appears and IDE generated <span style="FONT-WEIGHT: bold">SerializeTime.java</span> is displayed in the source 
+  editor window of NetBeans IDE. </li></ul>2. Modify the IDE generated <span style="FONT-WEIGHT: bold">SerializeTime.java </span>as shown in Code-1.11 
+below.&nbsp; Study the code by paying special attention to the bold fonted 
+parts. <br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top"><span style="FONT-WEIGHT: bold">import 
+      java.io.ObjectOutputStream;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">import java.io.FileOutputStream;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">import 
+      java.io.IOException;</span><br><br>public class 
+      SerializeTime{<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public static 
+      void main(String [] args){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="FONT-WEIGHT: bold">String filename = "time.ser";</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      if(args.length &gt; 0) {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      filename = args[0];</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp; // Create an 
+      object</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      PersistentTime time = new PersistentTime();</span><br style="COLOR: rgb(255,0,0)"><span style="COLOR: rgb(255,0,0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      </span><br style="COLOR: rgb(255,0,0)"><span style="COLOR: rgb(255,0,0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp; // Serialize the 
+      object instance and save it in</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      // a file.</span><br style="COLOR: rgb(255,0,0)"><span style="COLOR: rgb(255,0,0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      </span><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">FileOutputStream fos = 
+      null;</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ObjectOutputStream out = null;</span><br style="COLOR: rgb(255,0,0)"><span style="COLOR: rgb(255,0,0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"> try {</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fos = new FileOutputStream(filename);</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out = new ObjectOutputStream(fos);</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out.writeObject(time);</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out.close();</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      } catch(IOException ex) {</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ex.printStackTrace();</span><br style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold"><span style="COLOR: rgb(255,0,0); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }</span><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="FONT-WEIGHT: bold">System.out.println("Current time is saved into " 
+      + filename);</span><br>&nbsp;&nbsp;&nbsp; 
+}<br>}<br></td></tr></tbody></table>Code-1.11: SerializeTime.java<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte3.png"><br><br>3. Write <span style="FONT-WEIGHT: bold">PersistentTime.java</span>.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import java.io.Serializable;<br>import 
+      java.util.Date;<br>import java.util.Calendar;<br><br><span style="FONT-WEIGHT: bold">public class PersistentTime implements 
+      Serializable{</span><br>&nbsp;&nbsp;&nbsp; private Date 
+      time;<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public PersistentTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time = 
+      Calendar.getInstance().getTime();<br>&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public Date getTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+      time;<br>&nbsp;&nbsp;&nbsp; }<br>}<br></td></tr></tbody></table><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte4.png"><br><br>3. Write <span style="FONT-WEIGHT: bold">DeserializeTime.java</span>.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import 
+      java.io.ObjectInputStream;<br>import java.io.FileInputStream;<br>import 
+      java.io.IOException;<br>import java.util.Calendar;<br><br>public class 
+      DeserializeTime {<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public 
+      static void main(String [] args) 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String filename = 
+      "time.ser";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(args.length 
+      &gt; 0) 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      filename = args[0];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      Deserialize the previously saved </span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      PersistentTime object instance.</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      PersistentTime time = null;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      FileInputStream fis = null;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ObjectInputStream in = null;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try 
+      {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fis = new FileInputStream(filename);</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      in = new ObjectInputStream(fis);</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      time = (PersistentTime)in.readObject();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      in.close();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+      catch(IOException ex) {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ex.printStackTrace();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+      catch(ClassNotFoundException ex) {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ex.printStackTrace();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // print out restored 
+      time<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      System.out.println("Previously serialized time: " + 
+      time.getTime());<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // print out the current 
+      time<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      System.out.println("Current time: " + 
+      Calendar.getInstance().getTime());<br>&nbsp;&nbsp;&nbsp; 
+  }<br>}<br></td></tr></tbody></table><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte5.png"><br><br>4. Build and run the 
+Serialization part of the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">SerializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li></ul><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte6.png"><br>
+<ul>
+  <li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-1.13 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">Current time is saved into 
+  time.ser<br></td></tr></tbody></table>Figure-1.13: Result of running 
+SerializeAndDeserializeCurrrentTime application<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte7.png"><br><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"></span><br>5. Build and run the 
+Deserialization part of the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">DeserializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li></ul><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte8.png"><br>
+<ul>
+  <li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-1.13 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">Previously serialized time: Mon Feb 26 
+      01:57:16 EST 2007<br>Current time: Mon Feb 26 01:58:58 EST 
+  2007<br></td></tr></tbody></table>Figure-1.13: Result of running 
+SerializeAndDeserializeCurrrentTime application<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte9.png"><br>
+<br>
+<br>5. For your own exercise, 
+do the following tasks. Build and run the application.<br>
+<ul>
+  <li>Add another field called myName which is String type to the PersistentTIme 
+  class.<br>
+  </li><li>Modify SerializeTime.java and DeserializeTime.java to display the myName 
+  field.<br></li></ul></div>
+<div style="MARGIN-LEFT: 40px">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_1">return 
+to top of the exercise</a><br>
+<br></div><br>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial"><a name="1.2"></a>(1.2) Use transient 
+keyword<br></h3>
+<div style="MARGIN-LEFT: 40px"><br>1. Modify <span style="FONT-WEIGHT: bold">PersistentTime.java </span>as shown in Code-1.11 
+below. The code fragment that needs to be modified is highlighted in bold and 
+blue-colored font. The change is to make the time field to be transient.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import java.io.Serializable;<br>import 
+      java.util.Date;<br>import java.util.Calendar;<br><br>public class 
+      PersistentTime implements Serializable{<br>&nbsp;&nbsp;&nbsp; <span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">transient</span> private 
+      Date time;<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public 
+      PersistentTime() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time = 
+      Calendar.getInstance().getTime();<br>&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public Date getTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+      time;<br>&nbsp;&nbsp;&nbsp; }<br>}<br></td></tr></tbody></table>Code-1.11: 
+SerializeTime.java<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte10.png"><br><br>2. Build and run the Serialization 
+part of the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">SerializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li><li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-1.13 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">Current time is saved into 
+  time.ser<br></td></tr></tbody></table>Figure-1.13: Result of running 
+SerializeAndDeserializeCurrrentTime application<br><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"></span><br>3. Build and run the 
+Deserialization part of the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">DeserializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li><li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-1.13 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top"><span style="FONT-WEIGHT: bold">Previously 
+      serialized time: null</span><br>Current time: Mon Feb 26 02:07:09 EST 
+      2007<br></td></tr></tbody></table>Figure-1.13: Result of running 
+SerializeAndDeserializeCurrrentTime application<br><br><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte11.png"><br>
+</span><br>
+<br>4. For your own exercise, 
+do the following tasks. Build and run the application.<br>
+<ul>
+  <li>Make myName field transient.<br>
+  </li><li>Object that the field is not serialized.<br></li></ul><br></div>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial">Summary<br></h3>
+<div style="MARGIN-LEFT: 40px"><br>In this exercise, you learned how to do 
+serialization and deserialization of the an object.&nbsp; You also learned how 
+to use transient keyword.<br></div>
+<div style="MARGIN-LEFT: 40px"></div>
+<div style="MARGIN-LEFT: 40px">
+<div style="MARGIN-LEFT: 40px"><br></div><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Tutorial_Exercises">return 
+to the top</a><br></div><br><br>
+<h2><a name="Exercise_2"></a>Exercise 2: Version Control<br></h2>
+<p style="MARGIN-LEFT: 40px">In this exercise, you will learn how to do version 
+control.</p>
+<ol>
+  <ol>
+    <li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#2.1">Modify 
+    the class after serialization</a> 
+    </li><li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#2.2">Use 
+    unique version id</a><br>
+</li></ol></ol>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial"><a name="2.1"></a>(2.1) Modify the 
+class after serialization<br></h3>
+<div style="MARGIN-LEFT: 40px"><br>1. Build and run the Serialization part of 
+the project. <br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">SerializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li><li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-2.10 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">Current time is saved into 
+  time.ser<br></td></tr></tbody></table>Figure-2.10: Result <br><br>2. Modify the 
+<span style="FONT-WEIGHT: bold">PersistentTim.java </span>as shown in Code-2.11 
+below.&nbsp; The change is to add another field to the <span style="FONT-WEIGHT: bold">PersistentTime </span>class after the 
+serialization.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import java.io.Serializable;<br>import 
+      java.util.Date;<br>import java.util.Calendar;<br><br>public class 
+      PersistentTime implements Serializable{<br>&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; <span style="COLOR: rgb(0,0,153); FONT-WEIGHT: bold">private Date 
+      time;</span><br>&nbsp;&nbsp;&nbsp; <span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">private String 
+      aNewField;</span><br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public 
+      PersistentTime() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time = 
+      Calendar.getInstance().getTime();<br>&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public Date getTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+      time;<br>&nbsp;&nbsp;&nbsp; }<br>}<br></td></tr></tbody></table>Code-2.11: 
+FileReaderWriter.java<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte12.png"><br><br>3. Compile the 
+PersistentTime.java.<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">PersistentTime.java</span> and 
+  select <span style="FONT-WEIGHT: bold">Compile File</span>. </li></ul><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte13.png"><br><br>4. Build and run the Deserialization 
+part of the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">DeserializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li><li>Observe the <span style="FONT-WEIGHT: bold">java.io.InvalidClassException</span> exception in 
+  the <span style="FONT-WEIGHT: bold">Output </span>window. (Figure-2.12 below) 
+  </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">java.io.InvalidClassException: 
+      PersistentTime; local class incompatible: stream classdesc 
+      serialVersionUID = -3126998878902358585, local class serialVersionUID = 
+      -5560460247034149373<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at 
+      java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:519)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      at 
+      java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1546)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      at 
+      java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1460)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      at 
+      java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1693)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      at 
+      java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1299)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      at 
+      java.io.ObjectInputStream.readObject(ObjectInputStream.java:339)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      at DeserializeTime.main(DeserializeTime.java:23)<br>Exception in thread 
+      "main" java.lang.NullPointerException<br></td></tr></tbody></table><span style="COLOR: rgb(0,0,0)">Figure-2.12: </span>java.io.InvalidClassException 
+exception<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte14.png"><br><span style="COLOR: rgb(0,0,0)"><br><br></span></div>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial"><a name="2.2"></a>(2.2) Use a version 
+id<br></h3>
+<div style="MARGIN-LEFT: 40px"><span style="COLOR: rgb(0,0,0)"><br>1. 
+</span>Modify the <span style="FONT-WEIGHT: bold">PersistentTim.java </span>as 
+shown in Code-2.11 below.&nbsp; The change is to add unique version id to the 
+class.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import java.io.Serializable;<br>import 
+      java.util.Date;<br>import java.util.Calendar;<br><br>public class 
+      PersistentTime implements Serializable{<br>&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; <span style="FONT-WEIGHT: bold">static final long 
+      serialVersionUID = -3126998878902358585L;</span><br>&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; private Date time;<br>&nbsp;&nbsp;&nbsp; private 
+      String aNewField;<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public 
+      PersistentTime() {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time = 
+      Calendar.getInstance().getTime();<br>&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public Date getTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+      time;<br>&nbsp;&nbsp;&nbsp; }<br>}<br></td>
+    <td style="VERTICAL-ALIGN: top"><br></td></tr></tbody></table>Code-2.21: Assign 
+a unique version id to the class file<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte15.png"><br><br>2. Compile the <span style="FONT-WEIGHT: bold">PersistentTime.java</span>.<br>
+<ul>
+  <li>Right click PersistentTime.java and select Compile File.&nbsp; (If Compile 
+  File is grayed out, then NetBeans IDE did automatic compilation)<br></li></ul>3. 
+Build and run the Serialization part of the project. <br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">SerializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li><li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-1.13 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">Current time is saved into 
+  time.ser<br></td></tr></tbody></table>Figure-1.13: Result of running 
+SerializeAndDeserializeCurrrentTime application<br><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"></span><br>4. Modify the <span style="FONT-WEIGHT: bold">PersistentTim.java </span>as shown in Code-2.11 
+below.&nbsp; The change is to add another field to the <span style="FONT-WEIGHT: bold">PersistentTime </span>class after the 
+serialization.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import java.io.Serializable;<br>import 
+      java.util.Date;<br>import java.util.Calendar;<br><br>public class 
+      PersistentTime implements Serializable{<br><br>&nbsp;&nbsp;&nbsp; static 
+      final long serialVersionUID = -3126998878902358585L;<br>&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; private Date time;<br>&nbsp;&nbsp;&nbsp; private 
+      String aNewField;<br>&nbsp;&nbsp;&nbsp; <span style="FONT-WEIGHT: bold">private String 
+      aNewNewField;</span><br><br>&nbsp;&nbsp;&nbsp; public PersistentTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time = 
+      Calendar.getInstance().getTime();<br>&nbsp;&nbsp;&nbsp; 
+      }<br><br>&nbsp;&nbsp;&nbsp; public Date getTime() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 
+      time;<br>&nbsp;&nbsp;&nbsp; }<br>}<br></td></tr></tbody></table>Code-2.11: 
+FileReaderWriter.java<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte16.png"><br><br>5. Compile the <span style="FONT-WEIGHT: bold">PersistentTime.java</span>.<br>
+<ul>
+  <li>Right click PersistentTime.java and select Compile File.<br></li></ul>6. 
+Build and run the Deserialization part of the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">DeserializeTime.java 
+  </span>project and select <span style="FONT-WEIGHT: bold">Run File.</span> 
+  </li><li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-2.23 below) </li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">Previously serialized time: Mon Feb 26 
+      03:04:59 EST 2007<br>Current time: Mon Feb 26 03:05:13 EST 
+  2007<br></td></tr></tbody></table><span style="COLOR: rgb(0,0,0)">Figure-2.23: 
+Result<br><br><img style="WIDTH: 785px; HEIGHT: 757px" alt="" src="./LAB-21_ Java Serialization_files/1_byte17.png"><br></span><br>
+<br><br>&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_2">return 
+to top of the exercise</a><br><br></div>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial">Summary</h3>
+<p style="MARGIN-LEFT: 40px">In this exercise,&nbsp; you have learned how to do 
+version control for serialization and deserialization of an 
+object.<br><br></p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Tutorial_Exercises">return 
+to the top</a><br><br><br><br>
+<h2><a name="Exercise_3"></a>Exercise 3: Customizing default protocol<br></h2>
+<p style="MARGIN-LEFT: 40px">In this exercise, you will learn how to provide 
+your own readObject() and writeObject() methods, thus changing the behavior of 
+the default protocol.<br></p>
+<ol>
+  <ol>
+    <li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#3.1">Using 
+    the default readObject() and writeObject()</a> 
+    </li><li><a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#3.2">Using 
+your own readObject() and writeObject()</a><br></li></ol></ol>
+<br>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial"><a name="3.1"></a>(3.1) Using the 
+default readObject() and writeObject()<br></h3><br>
+<div style="MARGIN-LEFT: 40px">1. Create a new NetBeans project<br>
+<ul>
+  <li>Select <span style="FONT-WEIGHT: bold">File</span>-&gt;<span style="FONT-WEIGHT: bold">New Project (Ctrl+Shift+N)</span>. The <span style="FONT-WEIGHT: bold">New Project</span> dialog box appears. 
+  </li><li>Under <span style="FONT-WEIGHT: bold">Choose Project</span> pane, select 
+  <span style="FONT-WEIGHT: bold">Java </span>under <span style="FONT-WEIGHT: bold">Categories </span>and <span style="FONT-WEIGHT: bold">Java Application</span> under <span style="FONT-WEIGHT: bold">Projects</span>. <br>
+  </li><li>Click <span style="FONT-WEIGHT: bold">Next</span>. </li></ul>
+<ul>
+  <li>Under <span style="FONT-WEIGHT: bold">Name and Location</span> pane, for 
+  the <span style="FONT-WEIGHT: bold">Project Name</span> field, type in <span style="FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255)">SerializeAnimationThreadNotStarted</span></span><span style="FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255)"></span> 
+  </span>as project name. 
+  </li><li>For <span style="FONT-WEIGHT: bold">Create Main Class</span> field, type 
+  in <span style="FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255)">SerializeAnimationThreadNotStarted</span></span>.&nbsp; 
+  <br>
+  </li><li>Click <span style="FONT-WEIGHT: bold">Finish</span>. </li></ul><img style="WIDTH: 737px; HEIGHT: 507px" alt="" src="./LAB-21_ Java Serialization_files/1_byte18.png"><br>
+<ul>
+  <li>Observe that <span style="FONT-WEIGHT: bold">SerializeAnimationThreadNotStarted </span>project 
+  appears and IDE generated <span style="FONT-WEIGHT: bold">SerializeAnimationThreadNotStarted.java</span> is 
+  displayed in the source editor window of NetBeans IDE. </li></ul>2. Modify the 
+IDE generated <span style="FONT-WEIGHT: bold">SerializeAnimationThreadNotStarted.java </span>as 
+shown in Code-3.11 below.&nbsp; Study the code by paying special attention to 
+the bold fonted parts.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">import java.io.FileInputStream;<br>import 
+      java.io.FileOutputStream;<br>import java.io.IOException;<br>import 
+      java.io.ObjectInputStream;<br>import 
+      java.io.ObjectOutputStream;<br><br>public class 
+      SerializeAnimationThreadNotStarted {<br>&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; public static void main(String[] args) 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create an object 
+      instance<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PersistentAnimation 
+      a = new 
+      PersistentAnimation(1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Serialize the 
+      object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FileOutputStream fos 
+      = null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ObjectOutputStream 
+      out = null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fos = new 
+      FileOutputStream("serializedfile");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out = new 
+      ObjectOutputStream(fos);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out.writeObject(a);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out.close();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+      catch(IOException ex) 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ex.printStackTrace();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      Deserialize the object.&nbsp; The problem is that the</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      PersistentAnimation thread does not get started</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      automatically after the deserialization since its </span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      constructor method does not get called when the </span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      serialized object is deserialized.&nbsp; This is why</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      the PersistentAnimation class has to have its own</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      readObject() method in which the thread is </span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // 
+      explicitly started.</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      </span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      PersistentAnimation b = null;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      FileInputStream fis = null;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ObjectInputStream in = null;</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try 
+      {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      fis = new FileInputStream("serializedfile");</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      in = new ObjectInputStream(fis);</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      b = (PersistentAnimation)in.readObject();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      in.close();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+      catch(IOException ex) {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ex.printStackTrace();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+      catch(ClassNotFoundException ex) {</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      ex.printStackTrace();</span><br style="FONT-WEIGHT: bold"><span style="FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      </span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; 
+<br>}<br></td></tr></tbody></table>Code-3.11: 
+SerializeAnimationThreadNotStarted.java<br><br><img style="WIDTH: 785px; HEIGHT: 826px" alt="" src="./LAB-21_ Java Serialization_files/1_byte19.png"><br><br>3. Write <span style="FONT-WEIGHT: bold">PersistentAnimation.java</span> as shown in Code-3.12 
+below.&nbsp; <br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top"><span style="FONT-WEIGHT: bold"></span>import 
+      java.io.Serializable;<br><br>public class PersistentAnimation implements 
+      Serializable, Runnable {<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; 
+      transient private Thread animator;<br>&nbsp;&nbsp;&nbsp; private int 
+      animationSpeed;<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public 
+      PersistentAnimation(int animationSpeed) 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.animationSpeed = 
+      animationSpeed;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; animator = 
+      new Thread(this);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      animator.start();<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; 
+      <br>&nbsp;&nbsp;&nbsp; public void run() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      System.out.println("PersistentAnimation thread is 
+      started");<br>&nbsp;&nbsp;&nbsp; }<br>}<br></td></tr></tbody></table>Code-3.12: 
+PersistentAnimation.java<br><br><img style="WIDTH: 785px; HEIGHT: 764px" alt="" src="./LAB-21_ Java Serialization_files/1_byte20.png"><br><br>4. Build and run the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">SerializeAnimationThreadNotStarted </span>project 
+  and select <span style="FONT-WEIGHT: bold">Run</span>. </li></ul><img style="WIDTH: 785px; HEIGHT: 764px" alt="" src="./LAB-21_ Java Serialization_files/1_byte21.png"><br>
+<ul>
+  <li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-3.13 below)&nbsp; Observe that the thread is not 
+  started automatically when the object is deserialized.<br></li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">PersistentAnimation thread is 
+    started<br></td></tr></tbody></table>Figure-3.13: Result of running 
+SerializeAnimationThreadNotStarted application<br><br><img style="WIDTH: 785px; HEIGHT: 764px" alt="" src="./LAB-21_ Java Serialization_files/1_byte22.png"><br><br>
+<br>
+<br></div>
+<div style="MARGIN-LEFT: 40px">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_3">return 
+to top of the exercise</a><br><br></div>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial"><a name="3.2"></a>(3.2) Using your 
+own readObject() and writeObject()<br></h3><br>
+<div style="MARGIN-LEFT: 40px">1. Modify <span style="FONT-WEIGHT: bold">PersistentAnimation.java</span> as shown in Code-3.21 
+below.&nbsp; The code fragments that need to be changed are highlighted in bold 
+and blue-colored font.<br><br>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top"><span style="FONT-WEIGHT: bold"></span>import java.io.IOException;<br>import 
+      java.io.ObjectInputStream;<br>import java.io.ObjectOutputStream;<br>import 
+      java.io.Serializable;<br><br>public class PersistentAnimation implements 
+      Serializable, Runnable {<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; 
+      transient private Thread animator;<br>&nbsp;&nbsp;&nbsp; private int 
+      animationSpeed;<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public 
+      PersistentAnimation(int animationSpeed) 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.animationSpeed = 
+      animationSpeed;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">startAnimation();</span><br>&nbsp;&nbsp;&nbsp; 
+      }<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; public void run() 
+      {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      System.out.println("PersistentAnimation thread is 
+      started");<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; <br><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; // 
+      Provide your own writeObject method</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      private void writeObject(ObjectOutputStream out) throws IOException 
+      {</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      out.defaultWriteObject();</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      }</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      </span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; // 
+      Provide your own readObject method</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      private void readObject(ObjectInputStream in) throws IOException, 
+      ClassNotFoundException {</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      // our "pseudo-constructor"</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      in.defaultReadObject();</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      // now we are a "live" object again, so let's run rebuild and 
+      start</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      startAnimation();</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      </span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      }</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      </span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      private void startAnimation() {</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      animator = new Thread(this);</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      animator.start();</span><br style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold"><span style="COLOR: rgb(51,51,255); FONT-WEIGHT: bold">&nbsp;&nbsp;&nbsp; 
+      }</span><br>}<br></td></tr></tbody></table>Code-3.21: 
+PersistentAnimation.java<br><br><img style="WIDTH: 785px; HEIGHT: 804px" alt="" src="./LAB-21_ Java Serialization_files/1_byte23.png"><br><br>2. Build and run the project<br>
+<ul>
+  <li>Right click <span style="FONT-WEIGHT: bold">SerializeAnimationThreadStarted </span>project and 
+  select <span style="FONT-WEIGHT: bold">Run</span>. 
+  </li><li>Observe the result in the <span style="FONT-WEIGHT: bold">Output 
+  </span>window. (Figure-3.22 below)&nbsp; Observe that the thread is now 
+  started when the object is deserialized.<br></li></ul>
+<table style="TEXT-ALIGN: left; WIDTH: 100%" border="1" cellspacing="2" cellpadding="2">
+  <tbody>
+  <tr>
+    <td style="VERTICAL-ALIGN: top">PersistentAnimation thread is 
+      started<br>PersistentAnimation thread is 
+started<br></td></tr></tbody></table>Figure-3.22: Result of running 
+SerializeAnimationThreadStarted application<br><br><img style="WIDTH: 785px; HEIGHT: 804px" alt="" src="./LAB-21_ Java Serialization_files/1_byte24.png"><br>
+<br>
+<br></div>
+<div style="MARGIN-LEFT: 40px">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_3">return 
+to top of the exercise</a><br></div>
+<div style="MARGIN-LEFT: 40px"><br><br></div>
+<h3 style="MARGIN-LEFT: 40px" class="tutorial">Summary</h3>
+<div style="MARGIN-LEFT: 40px"><br>In this exercise, you learned how to provide 
+your own readObject() and writeObject() methods, thus changing the behavior of 
+the default 
+protocol.<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp; <a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Tutorial_Exercises">return 
+to the top</a><br><br>
+<br>
+<br>
+</div>
+<h2><a name="Homework"></a>Homework <br>
+</h2><br>
+<div style="MARGIN-LEFT: 40px">1. The homework is to either modify <span style="FONT-WEIGHT: bold">SerializeTime</span> NetBeans project you've done in 
+<a href="https://personales.unican.es/corcuerp/java/Labs/LAB_21.htm#Exercise_1">Exercise 
+1 above</a> or create a new project as following.&nbsp; (You might want to 
+create a new project by copying the <span style="FONT-WEIGHT: bold">SerializeTime</span> project.&nbsp; You can name the 
+homework project in any way you want but here I am going to call it <span style="FONT-WEIGHT: bold">MySerializationProject</span>.) </div>
+<ul style="MARGIN-LEFT: 40px">
+  <li>Write MyClassToBePersisted.java, which contains the following properties 
+  <ul>
+    <li>Profile field, which has the following fields 
+    <ul>
+      <li>String name 
+      </li><li>int age 
+      </li><li>String hobby </li></ul>
+    </li><li>School field, which has the following fields 
+    <ul>
+      <li>String nameOfSchool 
+      </li><li>int yearStarted (this is transient field) </li></ul>
+    </li><li>Write SerializeMyClassToBePersisted.java which creates an instance of 
+    MyClassToBePersisted class and serialize it into a file in its main method. 
+    </li><li>Write DeserializeMyClassToBePersisted.java which read the serialized 
+    file and deserialize it into instance of MyClassToBePersisted class in its 
+    main method. </li></ul>
+  </li><li>Write MyClassToBePersisted.java, which contains the following properties 
+  with version control.<br></li></ul>
+
+<div style="MARGIN-LEFT: 40px"><br></div>
+<p></p><!-- ======================================================================================== -->
+</body></html>
