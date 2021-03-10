@@ -6,7 +6,14 @@ public class CharStreamTester {
 
     public static void main(String args[]) throws IOException {
             File inputFile=new File("foo.txt");
+
             File outputFile=new File("out.txt");
+            File file=new File("C:\\Users\\Nilay\\IdeaProjects\\io-demo-2\\src\\comm\\example");
+            String str[]=file.list();
+            for(String name:str)
+            {
+                System.out.println(name);
+            }
 
         FileReader reader=new FileReader(inputFile);
         FileWriter writer=new FileWriter(outputFile);
