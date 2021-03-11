@@ -1,0 +1,5 @@
+Java Help Center
+Welcome to the Java.com Help Center where
+we describe solutions for issues you might encounter
+when downloading and using Java on your computer.
+We track the most frequently reported issues and error codes and provide answers for them in this section.
