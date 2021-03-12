@@ -8,5 +8,7 @@ import comm.example.model.Employee;
 public interface EmployeeService {
 	
 	public List<Employee> getAllEmployees() throws SQLException;
+	
+	public Employee createEmployee(Employee employee) throws SQLException;
 
 }
