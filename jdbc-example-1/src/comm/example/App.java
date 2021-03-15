@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import comm.example.exception.EmployeeNotFoundException;
 import comm.example.model.Employee;
 import comm.example.service.EmployeeService;
 import comm.example.service.EmployeeServiceImpl;
@@ -36,6 +37,7 @@ public class App {
 		do {
 			System.out.println("1.Create An Employee.");
 			System.out.println("2.Display All Employees.");
+			System.out.println("3. Remove a record.");
 			System.out.println("0.Exit.");
 			System.out.print("Enter Your Choice. ");
 			choice = scanner.nextInt();
@@ -61,6 +63,10 @@ public class App {
 				EmployeeService employeeService = new EmployeeServiceImpl();
 				try {
 					List<Employee> employees = employeeService.getAllEmployees();
+					if(employees.isEmpty())
+					{
+						System.err.println("\nempty table.");
+					}
 					for (Employee e : employees) {
 						System.out.println(e);
 					}
@@ -69,6 +75,21 @@ public class App {
 					e.printStackTrace();
 				}
 				break;
+			case 3:
+				System.out.print("ID: ");
+				id = scanner.nextInt();
+				try {
+					employeeService = new EmployeeServiceImpl();
+					employeeService.removeEmployeeById(id);
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				} catch (EmployeeNotFoundException e) {
+					System.err.println(e.getMessaage());
+				}
+				break;
+				
+				
 			case 0:
 				System.out.println("Bye....!");
 				System.exit(0);

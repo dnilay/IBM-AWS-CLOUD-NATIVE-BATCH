@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import comm.example.exception.EmployeeNotFoundException;
 import comm.example.factory.ConnectionFactory;
 import comm.example.model.Employee;
 
@@ -48,6 +49,21 @@ public class EmployeeServiceImpl implements EmployeeService{
 		preparedStatement.setInt(6, employee.getBonus());
 		preparedStatement.executeUpdate();
 		return employee;
+	}
+
+	@Override
+	public void removeEmployeeById(int id) throws SQLException, EmployeeNotFoundException {
+		// TODO Auto-generated method stub
+		connection=ConnectionFactory.getMyConnection();
+		StringBuilder sql;
+		PreparedStatement preparedStatement=connection.prepareStatement("delete from employees where id=?");
+		preparedStatement.setInt(1, id);
+		int result=preparedStatement.executeUpdate();
+		if(result<=0)
+		{
+			throw new EmployeeNotFoundException("no such record found with id: "+id); 
+		}
+		System.out.println("record removed sucessfully.");
 	}
 
 }
