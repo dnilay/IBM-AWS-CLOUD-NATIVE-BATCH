@@ -12,7 +12,8 @@ public class App
     {
         ClassPathXmlApplicationContext context=
         		new ClassPathXmlApplicationContext("applicationContext.xml");
-        Coach myCoach=context.getBean("theCoach",BaseBallCoach.class);
+        Coach myCoach=context.getBean("theCoach",CricketCoach.class);
         System.out.println(myCoach.getDailyWorkout());
+       System.out.println(myCoach.getDailyFortune());
     }
 }
