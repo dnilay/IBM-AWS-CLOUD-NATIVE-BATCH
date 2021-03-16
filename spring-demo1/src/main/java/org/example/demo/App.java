@@ -1,8 +1,6 @@
 package org.example.demo;
 
-import org.example.demo.bean.BaseBallCoach;
-import org.example.demo.bean.Coach;
-import org.example.demo.bean.CricketCoach;
+import org.example.demo.bean.Person;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
@@ -12,8 +10,14 @@ public class App
     {
         ClassPathXmlApplicationContext context=
         		new ClassPathXmlApplicationContext("applicationContext.xml");
-        Coach myCoach=context.getBean("theCoach",CricketCoach.class);
-        System.out.println(myCoach.getDailyWorkout());
-       System.out.println(myCoach.getDailyFortune());
+		/*
+		 * Coach myCoach=context.getBean("theCoach",CricketCoach.class);
+		 * System.out.println(myCoach.getDailyWorkout());
+		 * System.out.println(myCoach.getDailyFortune());
+		 */
+        
+        Person person=context.getBean("person",Person.class);
+        System.out.println(person.getAddress());
+        
     }
 }

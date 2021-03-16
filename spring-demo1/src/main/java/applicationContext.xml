@@ -2,12 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-<bean name="theCoach" class="org.example.demo.bean.CricketCoach">
+<!-- <bean name="theCoach" class="org.example.demo.bean.CricketCoach">
 
 	<constructor-arg name="fortuneService" ref="fs">
 	</constructor-arg>
 </bean>
 <bean name="fs" class="org.example.demo.bean.LuckyService">
+</bean> -->
+
+<bean name="address" class="org.example.demo.bean.Address">
+
+<property name="addressLine1" value="Chennai"/>
+<property name="addressLine2" value="India"/>
+
+</bean>
+<bean name="person" class="org.example.demo.bean.Person">
+
+<property name="address" ref="address"/>
+<property name="id" value="1"/>
+<property name="name" value="John"/>
 </bean>
 
 </beans>
