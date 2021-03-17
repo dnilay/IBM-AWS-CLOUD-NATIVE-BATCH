@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -21,12 +23,36 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.print("ID: ");
-        int id = scanner.nextInt();
-        System.out.print("NAME: ");
-        String name = scanner.next();
-        customerService.createCustomer(new Customer(id,name));
-        System.out.print("customer created.");
+        int choice=0;
+        do{
+            System.out.println("1.Create");
+            System.out.println("2.Display");
+            System.out.println("0.Exit");
+            System.out.print("Enter Your Choice: ");
+            choice=scanner.nextInt();
+            switch (choice)
+            {
+                case 1:
+                    System.out.print("ID: ");
+                    int id = scanner.nextInt();
+                    System.out.print("NAME: ");
+                    String name = scanner.next();
+                    customerService.createCustomer(new Customer(id,name));
+                    System.out.print("customer created.");
+                    break;
+                case 2:
+                    List<Customer> list=customerService.getAllCustomer();
+                    Iterator<Customer> iterator=list.listIterator();
+                    while(iterator.hasNext())
+                    {
+                        System.out.println(iterator.next());
+                    }
+
+            }
+
+        }while(choice!=0);
+
+
     }
 
 }

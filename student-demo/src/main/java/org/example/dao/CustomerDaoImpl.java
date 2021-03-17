@@ -5,6 +5,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.Query;
+import java.util.List;
+
 public class CustomerDaoImpl implements CustomerDao{
     private SessionFactory sessionFactory;
     private Session session;
@@ -27,5 +30,12 @@ public class CustomerDaoImpl implements CustomerDao{
         }
 
 
+    }
+
+    @Override
+    public List<Customer> getAllCustomer() {
+        session=sessionFactory.openSession();
+        Query query=session.createQuery("FROM Customer");
+        return query.getResultList();
     }
 }
