@@ -1,32 +1,32 @@
 package org.example;
 
 import org.example.entity.Customer;
+import org.example.service.CustomerService;
+import org.example.service.CustomerServiceImpl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.Scanner;
+
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        try {
+public class App {
+    private static Scanner scanner = new Scanner(System.in);
+    private static CustomerService customerService;
 
-            SessionFactory factory=new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Customer.class).buildSessionFactory();
-            Session session=factory.openSession();
-            session.getTransaction().begin();
-            session.save(new Customer(1,"John"));
-            session.getTransaction().commit();
-            System.out.println("customer created.");
-
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+    static {
+        customerService = new CustomerServiceImpl();
     }
+
+    public static void main(String[] args) {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        System.out.print("NAME: ");
+        String name = scanner.next();
+        customerService.createCustomer(new Customer(id,name));
+        System.out.print("customer created.");
+    }
+
 }
