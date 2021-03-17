@@ -21,4 +21,19 @@ public class CustomerServiceImpl implements CustomerService{
     public List<Customer> getAllCustomer() {
         return customerDao.getAllCustomer();
     }
+
+    @Override
+    public Customer getCustomerById(int customerId) {
+        return customerDao.getCustomerById(customerId);
+    }
+
+    @Override
+    public List<Customer> getCustomerByName(String name) {
+        return customerDao.getCustomerByName(name);
+    }
+
+    @Override
+    public Customer updateCustomer(int customerId) {
+        return customerDao.updateCustomer(customerId);
+    }
 }

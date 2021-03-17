@@ -1,15 +1,19 @@
 package org.example.dao;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.example.entity.Customer;
+import org.example.exception.CustomerNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Scanner;
 
 public class CustomerDaoImpl implements CustomerDao{
     private SessionFactory sessionFactory;
+    private static Scanner scanner=new Scanner(System.in);
     private Session session;
     {
         sessionFactory=new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Customer.class).buildSessionFactory();
@@ -37,5 +41,41 @@ public class CustomerDaoImpl implements CustomerDao{
         session=sessionFactory.openSession();
         Query query=session.createQuery("FROM Customer");
         return query.getResultList();
+    }
+
+    @Override
+    public Customer getCustomerById(int customerId) {
+        session=sessionFactory.openSession();
+        Customer customer=session.find(Customer.class,customerId);
+        if(customer==null)
+        {
+           return null;
+        }
+        return customer;
+    }
+
+    @Override
+    public List<Customer> getCustomerByName(String name) {
+        session=sessionFactory.openSession();
+        Query query=session.createQuery("FROM Customer c where c.customerName=?1");
+        query.setParameter(1,name);
+        return query.getResultList();
+    }
+
+    @Override
+    public Customer updateCustomer(int customerId) {
+        session=sessionFactory.openSession();
+        Customer customer=session.get(Customer.class,customerId);
+        if(customer==null)
+        {
+            throw new CustomerNotFoundException("no customer found.");
+        }
+        System.out.print("NAME: ");
+        String name = scanner.next();
+        customer.setCustomerName(name);
+        session.getTransaction().begin();
+        session.merge(customer);
+        session.getTransaction().commit();
+        return customer;
     }
 }

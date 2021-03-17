@@ -8,5 +8,8 @@ public interface CustomerDao {
 
     public void createCustomer(Customer customer);
     public List<Customer> getAllCustomer();
+    public Customer getCustomerById(int customerId);
+    public List<Customer> getCustomerByName(String name);
+    public Customer updateCustomer(int customerId);
 
 }
