@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 public class Employee {
+
 	private String employeeId;
 	private String firstName;
 	private String lastName;

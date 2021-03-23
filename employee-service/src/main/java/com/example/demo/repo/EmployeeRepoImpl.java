@@ -35,4 +35,11 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 		return employee;
 	}
 
+	@Override
+	public Employee createEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		employeeMap.put(employeeMap.size()+1, employee);
+		return employee;
+	}
+
 }

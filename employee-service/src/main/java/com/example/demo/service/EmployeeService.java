@@ -7,4 +7,5 @@ import com.example.demo.model.Employee;
 public interface EmployeeService {
 	public Collection<Employee> getAllEmployee();
 	public Employee getEmployeeById(Integer id);
+	public Employee createEmployee(Employee employee);
 }

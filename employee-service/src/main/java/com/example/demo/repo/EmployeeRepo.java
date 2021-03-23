@@ -8,5 +8,7 @@ public interface EmployeeRepo {
 	
 	public Collection<Employee> getAllEmployee();
 	public Employee getEmployeeById(Integer id);
+	
+	public Employee createEmployee(Employee employee);
 
 }
