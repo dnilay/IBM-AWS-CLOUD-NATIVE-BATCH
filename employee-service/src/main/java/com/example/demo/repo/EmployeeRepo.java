@@ -10,5 +10,6 @@ public interface EmployeeRepo {
 	public Employee getEmployeeById(Integer id);
 	
 	public Employee createEmployee(Employee employee);
+	public Employee updateEmployee(Integer id,Employee employee);
 
 }

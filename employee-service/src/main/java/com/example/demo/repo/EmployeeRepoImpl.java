@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.exception.EmployeeNotFoundException;
 import com.example.demo.model.Employee;
 @Component
 public class EmployeeRepoImpl implements EmployeeRepo {
@@ -30,7 +31,7 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 		Employee employee=employeeMap.get(id);
 		if(employee==null)
 		{
-			throw new RuntimeException("no such id found");
+			throw new EmployeeNotFoundException("no such employee found");
 		}
 		return employee;
 	}
@@ -40,6 +41,21 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 		// TODO Auto-generated method stub
 		employeeMap.put(employeeMap.size()+1, employee);
 		return employee;
+	}
+
+	@Override
+	public Employee updateEmployee(Integer id,Employee employee) {
+		Employee tempEmployee=employeeMap.get(id);
+		if(tempEmployee==null)
+		{
+			throw new EmployeeNotFoundException("no employee found with the given id: "+id);
+		}
+		tempEmployee.setFirstName(employee.getFirstName());
+		tempEmployee.setLastName(employee.getLastName());
+		tempEmployee.setEmail(employee.getEmail());
+		employeeMap.remove(id);
+		employeeMap.put(id, tempEmployee);
+		return tempEmployee;
 	}
 
 }

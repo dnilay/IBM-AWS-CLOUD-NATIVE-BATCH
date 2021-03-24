@@ -35,4 +35,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepoImpl.createEmployee(employee);
 	}
 
+	@Override
+	public Employee updateEmployee(Integer id, Employee employee) {
+		// TODO Auto-generated method stub
+		return employeeRepoImpl.updateEmployee(id, employee);
+	}
+
 }
