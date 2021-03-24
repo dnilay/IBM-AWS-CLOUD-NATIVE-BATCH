@@ -29,4 +29,18 @@ public class AccountServiceImpl implements AccountService {
 		return dto;
 	}
 
+	@Override
+	public AccountDto findByAccountId(String accountId) {
+		// TODO Auto-generated method stub
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		AccountModel model=accountRepository.findByAccountId(accountId);
+		if(model==null)
+		{
+			throw new RuntimeException("no such account number found.");
+		}
+		AccountDto dto=mapper.map(model, AccountDto.class);
+		return dto;
+	}
+
 }

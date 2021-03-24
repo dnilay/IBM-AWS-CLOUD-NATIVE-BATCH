@@ -7,6 +7,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,15 @@ public class AccountController {
 		AccountResponseModel model=mapper.map(response, AccountResponseModel.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(model);
 		
+	}
+	@GetMapping("/accounts/{accountId}")
+	public ResponseEntity<AccountResponseModel> getAccountByAccountId(@PathVariable("accountId") String accountId)
+	{
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		AccountDto dto=accountService.findByAccountId(accountId);
+		AccountResponseModel response=mapper.map(dto, AccountResponseModel.class);
+		return ResponseEntity.ok(response);
 	}
 
 }
