@@ -13,5 +13,6 @@ public interface AccountRepository extends JpaRepository<AccountModel, Integer> 
 	public AccountModel findByEmail(String email);
 	@Query
 	public Integer deleteByAccountId(String accountId);
+	
 
 }

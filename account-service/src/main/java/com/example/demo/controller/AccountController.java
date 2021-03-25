@@ -11,17 +11,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.dto.AccountDto;
 import com.example.demo.exception.AccountNotFoundException;
 import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.service.AccountService;
 import com.example.demo.shared.AccountRequestModel;
 import com.example.demo.shared.AccountResponseModel;
-import com.example.demo.shared.ErrorResponse;
 
 @RestController
 @RequestMapping("/api")
@@ -72,13 +71,22 @@ public class AccountController {
 	@DeleteMapping("/accounts/{accountId}")
 	public ResponseEntity<Integer> deleteAccount(@PathVariable("accountId") String accountId) {
 
-		Integer result=accountService.deleteByAccountId(accountId);
-		if(result<1)
-		{
+		Integer result = accountService.deleteByAccountId(accountId);
+		if (result < 1) {
 			throw new AccountNotFoundException("no account found.");
 		}
 		return ResponseEntity.ok(result);
-	
+
 	}
 
+	@PutMapping("/accounts/{accountid}")
+	public ResponseEntity<AccountDto> updateAccount(@PathVariable("accountid") String accountId,
+			@RequestBody AccountRequestModel requestModel)
+	{
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		AccountDto dto= mapper.map(requestModel, AccountDto.class);
+		AccountDto d= accountService.updateAccount(accountId, dto);
+		return ResponseEntity.status(HttpStatus.OK).body(d);
+	}
 }

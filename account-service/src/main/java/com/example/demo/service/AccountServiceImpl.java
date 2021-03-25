@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.AccountDto;
+import com.example.demo.exception.AccountNotFoundException;
 import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.model.AccountModel;
 import com.example.demo.repo.AccountRepository;
@@ -75,6 +76,25 @@ public class AccountServiceImpl implements AccountService {
 		// TODO Auto-generated method stub
 		
 		return accountRepository.deleteByAccountId(accountId);
+	}
+
+	@Override
+	@Transactional
+	public AccountDto updateAccount(String accountId, AccountDto accountDto) {
+		AccountModel accountModel=accountRepository.findByAccountId(accountId);
+		if(accountModel==null)
+		{
+			throw new AccountNotFoundException("no such account found");
+		}
+		ModelMapper mapper=new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		AccountModel model=mapper.map(accountDto, AccountModel.class);
+		accountModel.setFirstName(model.getFirstName());
+		accountModel.setLastName(model.getLastName());
+		accountModel.setEmail(model.getEmail());
+		accountRepository.save(accountModel);
+		AccountDto accDto=mapper.map(accountModel, AccountDto.class);
+		return accDto;
 	}
 	
 }

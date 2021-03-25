@@ -11,5 +11,7 @@ public interface AccountService {
 	public AccountDto findByEmail(String email);
 
 	public Integer deleteByAccountId(String accountId);
+	
+	public AccountDto updateAccount(String accountId,AccountDto accountDto);
 
 }
