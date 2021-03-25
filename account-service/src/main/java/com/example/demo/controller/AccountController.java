@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.AccountDto;
 import com.example.demo.exception.AccountNotFoundException;
 import com.example.demo.exception.EmailNotFoundException;
+import com.example.demo.model.AccountModel;
 import com.example.demo.service.AccountService;
 import com.example.demo.shared.AccountRequestModel;
 import com.example.demo.shared.AccountResponseModel;
@@ -88,5 +92,23 @@ public class AccountController {
 		AccountDto dto= mapper.map(requestModel, AccountDto.class);
 		AccountDto d= accountService.updateAccount(accountId, dto);
 		return ResponseEntity.status(HttpStatus.OK).body(d);
+	}
+	@GetMapping("/accounts/firstName/{firstName}")
+	public ResponseEntity<List<AccountResponseModel>> getByfirstName(@PathVariable("firstName") String firstName)
+	{
+		List<AccountModel> list=accountService.getAccountByFirstName(firstName);
+		List<AccountResponseModel> responses=new ArrayList<AccountResponseModel>();
+		Iterator<AccountModel> i=list.iterator();
+		while(i.hasNext())
+		{
+			AccountModel m=i.next();
+			AccountResponseModel model=new AccountResponseModel();
+			model.setAccountId(m.getAccountId());
+			model.setEmail(m.getAccountId());
+			model.setFirstName(m.getFirstName());
+			model.setLastName(m.getLastName());
+			responses.add(model);
+		}
+		return ResponseEntity.ok(responses);
 	}
 }

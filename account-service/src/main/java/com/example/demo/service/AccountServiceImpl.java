@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +98,13 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.save(accountModel);
 		AccountDto accDto=mapper.map(accountModel, AccountDto.class);
 		return accDto;
+	}
+
+	@Override
+	public List<AccountModel> getAccountByFirstName(String firstName) {
+		// TODO Auto-generated method stub
+		List<AccountModel> accounts=accountRepository.findByFirstName(firstName);
+		return accounts;
 	}
 	
 }
