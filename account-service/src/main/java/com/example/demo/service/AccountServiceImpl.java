@@ -4,11 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.AccountDto;
+import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.model.AccountModel;
 import com.example.demo.repo.AccountRepository;
 @Service
+
 public class AccountServiceImpl implements AccountService {
 	private AccountRepository accountRepository;
 
@@ -19,6 +23,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	
 	public AccountDto createAccount(AccountDto accountDto) {
 		// TODO Auto-generated method stub
 		ModelMapper mapper = new ModelMapper();
@@ -30,6 +35,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+
 	public AccountDto findByAccountId(String accountId) {
 		// TODO Auto-generated method stub
 		ModelMapper mapper = new ModelMapper();
@@ -37,10 +43,30 @@ public class AccountServiceImpl implements AccountService {
 		AccountModel model=accountRepository.findByAccountId(accountId);
 		if(model==null)
 		{
-			throw new RuntimeException("no such account number found.");
+			return null;
 		}
-		AccountDto dto=mapper.map(model, AccountDto.class);
-		return dto;
+		else
+		{
+			AccountDto dto=mapper.map(model, AccountDto.class);
+			return dto;
+		}
+		
 	}
 
+	@Override
+
+	public AccountDto findByEmail(String email) {
+		// TODO Auto-generated method stub
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		AccountModel model=accountRepository.findByEmail(email);
+		System.out.println(model);
+	
+		
+			return (mapper.map(model, AccountDto.class));
+		
+		
+		 
+	}
+	
 }

@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AccountDto;
+import com.example.demo.exception.AccountNotFoundException;
+import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.service.AccountService;
 import com.example.demo.shared.AccountRequestModel;
 import com.example.demo.shared.AccountResponseModel;
+import com.example.demo.shared.ErrorResponse;
 
 @RestController
 @RequestMapping("/api")
@@ -49,8 +52,24 @@ public class AccountController {
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		AccountDto dto=accountService.findByAccountId(accountId);
+		if(dto==null)
+		{
+			throw new AccountNotFoundException("no such account with id: "+accountId);
+		}
 		AccountResponseModel response=mapper.map(dto, AccountResponseModel.class);
 		return ResponseEntity.ok(response);
+	}
+	@GetMapping("/accounts/email/{email}")
+	public ResponseEntity<AccountDto> findAccountByEmail(@PathVariable("email") String email)
+	{
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		AccountDto dto=accountService.findByEmail(email);
+		if(dto==null)
+		{
+			throw new EmailNotFoundException("email not found");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 
 }

@@ -9,5 +9,7 @@ import com.example.demo.model.AccountModel;
 public interface AccountRepository extends JpaRepository<AccountModel, Integer> {
 	@Query
 	public AccountModel findByAccountId(String accountId);
+	@Query
+	public AccountModel findByEmail(String email);
 
 }

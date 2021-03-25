@@ -6,5 +6,7 @@ public interface AccountService {
 	
 	public AccountDto createAccount(AccountDto accountDto);
 	public AccountDto findByAccountId(String accountId);
+	public AccountDto findByEmail(String email);
+
 
 }
