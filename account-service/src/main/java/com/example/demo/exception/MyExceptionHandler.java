@@ -31,7 +31,7 @@ public class MyExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleAnyException(Exception e)
 	{
 		ErrorResponse response=new ErrorResponse();
-		response.setErrorMessage(e.getMessage());
+		response.setErrorMessage("something wrong");
 		response.setErrorReportingTime(System.currentTimeMillis());
 		response.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

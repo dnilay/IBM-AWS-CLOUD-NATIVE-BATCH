@@ -68,5 +68,13 @@ public class AccountServiceImpl implements AccountService {
 		
 		 
 	}
+
+	@Override
+	@Transactional
+	public Integer deleteByAccountId(String accountId) {
+		// TODO Auto-generated method stub
+		
+		return accountRepository.deleteByAccountId(accountId);
+	}
 	
 }
