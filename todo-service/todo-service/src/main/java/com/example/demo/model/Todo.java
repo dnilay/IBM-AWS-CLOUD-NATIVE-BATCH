@@ -9,13 +9,39 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Todo {
     @Id
     private Integer todoId;
     private String desc;
     @JsonProperty
     private boolean isCompleted;
+	public Todo() {
+		super();
+	}
+	public Todo(Integer todoId, String desc, boolean isCompleted) {
+		super();
+		this.todoId = todoId;
+		this.desc = desc;
+		this.isCompleted = isCompleted;
+	}
+	public Integer getTodoId() {
+		return todoId;
+	}
+	public void setTodoId(Integer todoId) {
+		this.todoId = todoId;
+	}
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+    
+    
 }
