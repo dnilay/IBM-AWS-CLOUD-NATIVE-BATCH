@@ -21,7 +21,7 @@ public class BookController {
 		this.bookService = bookService;
 	}
 
-	@GetMapping("/authors/{authorName}")
+	@GetMapping("/books/{authorName}")
 	public ResponseEntity<List<Book>> findBooksByAuthorName(@PathVariable("authorName") String authorName)
 	{
 		return ResponseEntity.ok(bookService.findByAuthorName(authorName));
