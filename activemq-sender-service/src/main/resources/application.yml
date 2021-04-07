@@ -1,6 +1,15 @@
+hawtio:
+  authenticationEnabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hawtio,jolokia
+server:
+  port: 8081
 spring:
   activemq:
-    broker-url: tcp://Nilay-PC:61616
-    password: admin
-    user: admin  application:    name: activemq-sender
-server:  port: 8081
+    close-timeout: 15
+    in-memory: true
+  application:
+    name: activemq-sender
