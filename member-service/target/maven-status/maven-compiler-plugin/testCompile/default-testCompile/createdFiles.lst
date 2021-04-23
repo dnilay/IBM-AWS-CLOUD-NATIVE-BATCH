@@ -1,0 +1,3 @@
+com/example/memberservice/MemberServiceApplicationTests.class
+com/example/memberservice/service/MemberServiceTest.class
+com/example/memberservice/controller/MemberControllerTest.class
